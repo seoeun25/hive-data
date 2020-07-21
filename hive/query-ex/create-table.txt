@@ -1,0 +1,55 @@
+CREATE EXTERNAL TABLE wasp01.payment_raw(
+  `user_id` bigint,
+  `payment_id` bigint,
+  `amount` double,
+  `bonuscoin_amount` double,
+  `coinproduct_id` bigint,
+  `confirmed_at` bigint,
+  `created_at` bigint,
+  `currency` string,
+  `idapproval` string,
+  `locale` string,
+  `payment_type` string,
+  `pgcompany` string,
+  `point_amount` bigint,
+  `state` string,
+  `store` string
+)
+ROW FORMAT SERDE
+'org.apache.hive.hcatalog.data.JsonSerDe'
+STORED AS TEXTFILE
+LOCATION
+  'gs://wasp-02/dataflow/payment'
+;
+
+CREATE TABLE wasp00.subscription_content ROW FORMAT DELIMITED FIELDS TERMINATED BY "," AS
+select ${ymd} as ymd, a.objectId, count(*) as subscribe, 0 as plus, 0 as minus
+from wasp99.subscription_ymd a
+where a.ymd=${ymd}
+group by a.objectId
+
+CREATE EXTERNAL TABLE wasp00.voucher_tmp (
+  `voucher_id` bigint,
+  `user_id` bigint,
+  `coin_type` string comment 'color or point, bonusCoin',
+  `amount` int,
+  `org_amount` int,
+  `expired_at` bigint,
+  `available` boolean,
+  `refund` boolean,
+  `company_event_id` int,
+  `usage_restriction_id` int,
+  `coin_product_id` bigint,
+  `created_at` bigint,
+  `updated_at` bigint,
+  `purchase_id` bigint,
+  `payment_id` bigint,
+  `platform` string,
+  `locale` string,
+  `store` string
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ","
+STORED AS TEXTFILE
+LOCATION
+  'gs://wasp-02/voucher_tmp'
+;

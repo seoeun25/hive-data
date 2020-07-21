@@ -1,0 +1,15 @@
+set hive.execution.engine=tez;
+ALTER TABLE lz_insight.purchase2_j ADD IF NOT EXISTS PARTITION (ymd = ${hiveconf:dt_daily}) location 'gs://lz-insight/data/warehouse/datastore/json/purchase2/ymd=${hiveconf:dt_daily}';
+
+INSERT INTO TABLE wasp00.purchase_ymd PARTITION(ymd)
+SELECT
+  purchase_id, user_id, payment_id, platform, store, NULL as title, type, delta_coin as coin, NULL as bonus_coin, 
+  delta_point as point, balance_coin, NULL as balance_bonus_coin, balance_point, NULL as voucher_id,
+  created_at, created_at AS updated_at, ip, country, NULL as revenue_share, 0 as canceled, 
+  NULL as coin_product_id, NULL as bulk_purchase_id, ref_id, invitation_id, NULL as issue_id, reward_type,
+  object_id as lezhin_object_id, object_type as lezhin_object_type, v1_id as purchase_v1_id, 
+  NULL as company_event_id, NULL as price, NULL as currency, NULL as meta, 
+  group_id as purchase_group_id, NULL as locale, NULL as is_head, NULL as episode_coin,  
+  ymd
+FROM lz_insight.purchase2_j where ymd=${hiveconf:dt_daily}
+;

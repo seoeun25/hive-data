@@ -1,0 +1,126 @@
+<workflow-app name="curation_export_backoffice" xmlns="uri:oozie:workflow:0.5">
+    <start to="sqoop-efdf"/>
+    <kill name="Kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <action name="sqoop-efdf">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>oozie.launcher.yarn.app.mapreduce.am.resource.mb</name>
+                    <value>9728</value>
+                </property>
+            </configuration>
+              <arg>eval</arg>
+              <arg>--connect</arg>
+              <arg>jdbc:mysql://127.0.0.1:3308/lezhincomics_statistics</arg>
+              <arg>--username</arg>
+              <arg>lezhin</arg>
+              <arg>--password</arg>
+              <arg>eoqkrfpwls$</arg>
+              <arg>--query</arg>
+              <arg>delete from content_similarity where ymd=${ymd}</arg>
+        </sqoop>
+        <ok to="sqoop-2f95"/>
+        <error to="Kill"/>
+    </action>
+    <action name="sqoop-2f95">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>oozie.launcher.yarn.app.mapreduce.am.resource.mb</name>
+                    <value>9728</value>
+                </property>
+            </configuration>
+            <command>export --connect=jdbc:mysql://127.0.0.1:3308/lezhincomics_statistics --username=lezhin --password=eoqkrfpwls$ --table=content_similarity --export-dir /user/hive/warehouse/actdb.db/content_similarity_union</command>
+            <file>/user/hue/wasp/lib/jersey-client-1.9.jar#jersey-client-1.9.jar</file>
+        </sqoop>
+        <ok to="sqoop-92cf"/>
+        <error to="Kill"/>
+    </action>
+    <action name="sqoop-92cf">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>oozie.launcher.yarn.app.mapreduce.am.resource.mb</name>
+                    <value>9728</value>
+                </property>
+            </configuration>
+              <arg>eval</arg>
+              <arg>--connect</arg>
+              <arg>jdbc:mysql://127.0.0.1:3308/lezhincomics_statistics</arg>
+              <arg>--username</arg>
+              <arg>lezhin</arg>
+              <arg>--password</arg>
+              <arg>eoqkrfpwls$</arg>
+              <arg>--query</arg>
+              <arg>delete from content_similarity_set where ymd=${ymd}</arg>
+        </sqoop>
+        <ok to="sqoop-5f30"/>
+        <error to="Kill"/>
+    </action>
+    <action name="sqoop-5f30">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>oozie.launcher.yarn.app.mapreduce.am.resource.mb</name>
+                    <value>9728</value>
+                </property>
+            </configuration>
+            <command>export --connect=jdbc:mysql://127.0.0.1:3308/lezhincomics_statistics --username=lezhin --password=eoqkrfpwls$ --table=content_similarity_set --export-dir /user/hive/warehouse/actdb.db/content_similarity_set_union</command>
+            <file>/user/hue/wasp/lib/jersey-client-1.9.jar#jersey-client-1.9.jar</file>
+        </sqoop>
+        <ok to="End"/>
+        <error to="Kill"/>
+    </action>
+    <end name="End"/>
+</workflow-app>
+
+<action name="sqoop-efdf">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>oozie.launcher.yarn.app.mapreduce.am.resource.mb</name>
+                    <value>9728</value>
+                </property>
+            </configuration>
+              <arg>eval</arg>
+              <arg>--connect</arg>
+              <arg>jdbc:mysql://127.0.0.1:3308/lezhincomics_statistics</arg>
+              <arg>--username</arg>
+              <arg>lezhin</arg>
+              <arg>--password</arg>
+              <arg>eoqkrfpwls$</arg>
+              <arg>--query</arg>
+              <arg>delete from subscriptions_content where ymd=${ymd}</arg>
+        </sqoop>
+        <ok to="sqoop-2f95"/>
+        <error to="Kill"/>
+    </action>
+    <action name="sqoop-2f95">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>oozie.launcher.yarn.app.mapreduce.am.resource.mb</name>
+                    <value>9728</value>
+                </property>
+            </configuration>
+            <command>export --connect=jdbc:mysql://127.0.0.1:3308/lezhincomics_statistics --username=lezhin --password=eoqkrfpwls$ --table=subscriptions_content --columns=ymd,objectid,subscribe,plus,minus --export-dir /user/hive/warehouse/wasp00.db/subscription_content</command>
+            <file>/user/hue/wasp/lib/jersey-client-1.9.jar#jersey-client-1.9.jar</file>
+        </sqoop>
+        <ok to="hive2-96f5"/>
+        <error to="Kill"/>
+    </action>
+
