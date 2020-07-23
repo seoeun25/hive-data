@@ -1,0 +1,81 @@
+{
+  "type": "index",
+  "spec": {
+    "dataSchema": {
+      "dataSource": "seoul_roads",
+      "parser": {
+        "type": "string",
+        "parseSpec": {
+          "format": "tsv",
+          "dimensionsSpec": {
+            "dimensions": [
+              "id",
+              "name"
+            ]
+          },
+          "timestampSpec": {
+            "column": "date",
+            "format": "yyyy-MM-dd",
+            "missingValue": "2019-02-18"
+          },
+          "delimiter": "|",
+          "columns": [
+            "id",
+            "name",
+            "geom"
+          ],
+          "dequote": false
+        }
+      },
+      "metricsSpec": [
+        {
+          "name": "geom",
+          "type": "relay",
+          "typeName": "string"
+        }
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "YEAR",
+        "queryGranularity": "NONE",
+        "rollup": false,
+        "intervals": [
+          "2019-01-01/2020-01-01"
+        ]
+      }
+    },
+    "ioConfig": {
+      "type": "index",
+      "firehose": {
+        "type": "local",
+        "filter": "seoul_roads.tsv",
+        "baseDir": "/tmp"
+      }
+    },
+    "tuningConfig": {
+      "type": "index",
+      "maxRowsInMemory": 75000,
+      "ignoreInvalidRows": true,
+      "buildV9Directly": true,
+      "indexSpec": {
+        "bitmap": {
+          "type": "roaring"
+        },
+        "secondaryIndexing": {
+          "geom": {
+            "type": "lucene",
+            "strategies": [
+              {
+                "type": "shape",
+                "fieldName": "geom",
+                "shapeFormat": "WKT",
+                "shapeType": "line",
+                "maxLevels": 8
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

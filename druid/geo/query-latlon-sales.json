@@ -1,0 +1,18 @@
+{
+  "queryType": "select.stream",
+  "dataSource": "sales_local",
+  "columns": [
+    "column10",
+    "lat",
+    "lon"
+  ],
+  "batchSize": 20480,
+  "limit": 100,
+  "filter": {
+    "type": "lucene.latlon.polygon",
+    "field": "geo_p",
+    "operation": "Intersects",
+    "shapeFormat": "wkt",
+    "shapeString": "POLYGON ((127.011136 37.494466, 127.024620 37.494036, 127.026753 37.502427, 127.011136 37.494466))"
+  }
+}

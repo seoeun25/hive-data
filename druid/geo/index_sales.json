@@ -1,0 +1,97 @@
+{
+  "type" : "index",
+  "spec" : {
+    "dataSchema" : {
+      "dataSource" : "sales_local",
+      "parser" : {
+        "type" : "string",
+        "parseSpec" : {
+          "format" : "csv",
+          "dimensionsSpec" : {
+            "dimensions" : [ "column10", {
+              "name" : "lat"
+            }, {
+              "name" : "lon"
+            } ],
+            "dimensionExclusions" : [ ],
+            "spatialDimensions" : [ ]
+          },
+          "timestampSpec" : {
+            "column" : "timestamp",
+            "format" : "yyyy-MM-dd'T'HH:mm:ssZZ",
+            "missingValue" : "2020-07-21T06:37:50.793Z",
+            "invalidValue" : "2019-07-21T06:37:50.793Z",
+            "replaceWrongColumn" : true,
+            "timeZone" : "Asia/Seoul",
+            "locale" : "en"
+          },
+          "columns" : [ "timestamp", "column7", "column10", "lat", "lon", "sales_cnt" ]
+        },
+        "recordSeparator" : "\n",
+        "skipHeaderRecord" : true,
+        "charset" : "UTF-8"
+      },
+      "metricsSpec" : [ {
+        "type" : "relay",
+        "name" : "geo_p",
+        "columnName" : "geo_p",
+        "typeName" : "struct(lat:double,lon:double)"
+      }, {
+        "type" : "relay",
+        "name" : "sales_cnt",
+        "columnName" : "sales_cnt",
+        "typeName" : "double"
+      } ],
+      "enforceType" : true,
+      "granularitySpec" : {
+        "type" : "uniform",
+        "segmentGranularity" : "HOUR",
+        "queryGranularity" : "MINUTE",
+        "rollup" : false,
+        "append" : false,
+        "intervals" : [ "2011-03-28T05:00:00.000Z/2011-05-04T13:00:00.000Z" ]
+      },
+      "evaluations" : [ {
+        "outputName" : "geo_p",
+        "expressions" : [ "struct(lat,lon)" ]
+      } ],
+      "dimensionFixed" : false
+    },
+    "ioConfig" : {
+      "type" : "index",
+      "firehose": {
+        "type": "local",
+        "filter": "sales.csv",
+        "baseDir": "/tmp"
+      }
+    },
+    "tuningConfig" : {
+      "type": "index",
+      "maxRowsInMemory": 75000,
+      "ignoreInvalidRows": true,
+      "buildV9Directly": true,
+      "indexSpec" : {
+        "bitmap" : {
+          "type" : "roaring"
+        },
+        "dimensionSketches" : {
+          "type" : "none"
+        },
+        "secondaryIndexing" : {
+          "geo_p" : {
+            "type" : "lucene",
+            "textAnalyzer" : "standard",
+            "strategies" : [ {
+              "type" : "latlon",
+              "fieldName" : "coord",
+              "latitude" : "lat",
+              "longitude" : "lon",
+              "crs" : null
+            } ]
+          }
+        },
+        "allowNullForNumbers" : false
+      }
+    }
+  }
+}
