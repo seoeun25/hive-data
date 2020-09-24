@@ -1,0 +1,77 @@
+{
+  "type" : "index",
+  "spec" : {
+    "dataSchema" : {
+      "dataSource" : "worldcup",
+      "parser" : {
+        "type" : "string",
+        "parseSpec": {
+          "format": "csv",
+          "dimensionsSpec" : {
+            "dimensions" : [ "Year", "Time", "Round", "Stadium", "City", "Country", "HomeTeam", "AwayTeam", "Observation" ],
+            "dimensionExclusions" : [ ],
+            "spatialDimensions" : [ ]
+          },
+          "timestampSpec" : {
+            "column" : "Date",
+            "format" : "auto"
+          },
+          "columns" : [ "Year", "Date", "Time", "Round", "Stadium", "City", "Country", "HomeTeam", "HomeGoals", "AwayGoals", "AwayTeam", "Observation" ]
+        },
+        "delimiter" : ",",
+        "recordSeparator" : "\n",
+        "charset" : "UTF-8"
+      },
+      "metricsSpec" : [ {
+        "type" : "count",
+        "name" : "count"
+      }, {
+        "type" : "doubleSum",
+        "name" : "HomeGoals",
+        "fieldName" : "HomeGoals",
+        "inputType" : "double"
+      }, {
+        "type" : "doubleSum",
+        "name" : "AwayGoals",
+        "fieldName" : "AwayGoals",
+        "inputType" : "double"
+      } ],
+      "enforceType" : true,
+      "granularitySpec" : {
+        "type" : "uniform",
+        "segmentGranularity" : "MONTH",
+        "queryGranularity" : "DAY",
+        "rollup" : false,
+        "append" : false,
+        "intervals" : [ "1930-07-01T00:00:00.000Z/1930-09-01T00:00:00.000Z" ]
+      },
+      "dimensionFixed" : false
+    },
+    "ioConfig" : {
+      "type" : "index",
+      "firehose" : {
+        "type" : "local",
+        "baseDir" : "/tmp",
+        "filter" : "worldcup.csv",
+        "extractPartition" : false
+      }
+    },
+    "tuningConfig" : {
+      "type" : "index",
+      "targetPartitionSize" : 5000000,
+      "indexSpec" : {
+        "bitmap" : {
+          "type" : "roaring"
+        },
+        "dimensionSketches" : {
+          "type" : "none"
+        },
+        "allowNullForNumbers" : false
+      },
+      "buildV9Directly" : true,
+      "ignoreInvalidRows" : true,
+      "maxRowsInMemory" : 75000,
+      "maxOccupationInMemory" : -1
+    }
+  }
+}
