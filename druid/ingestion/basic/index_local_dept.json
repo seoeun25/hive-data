@@ -1,0 +1,68 @@
+{
+  "type": "index",
+  "spec": {
+    "dataSchema": {
+      "dataSource": "dept",
+      "parser": {
+        "type": "csv.stream",
+        "timestampSpec": {
+          "type": "auto",
+          "column": "Date",
+          "missingValue": "2021-04-26T00:43:38.713Z",
+          "invalidValue": "2021-04-26T00:43:38.713Z",
+          "replaceWrongColumn": true
+        },
+        "dimensionsSpec": {
+          "dimensions": ["Date", "dept_no", "dept_name", "fruit"],
+          "dimensionExclusions": [],
+          "spatialDimensions": []
+        },
+
+        "columns" : [ "Date", "dept_no", "dept_name", "fruit"]
+      },
+      "metricsSpec": [
+        {
+          "type": "count",
+          "name": "count"
+        }
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "DAY",
+        "queryGranularity": "DAY",
+        "intervals": [
+          "2021-04-25/2021-04-30"
+        ],
+        "rollup": false,
+        "append": false
+      },
+      "enforceType": true
+    },
+    "ioConfig" : {
+      "type" : "index",
+      "firehose" : {
+        "type" : "local",
+        "baseDir" : "/tmp",
+        "filter" : "dept.csv",
+        "extractPartition" : false
+      }
+    },
+    "tuningConfig" : {
+      "type" : "index",
+      "targetPartitionSize" : 5000000,
+      "indexSpec" : {
+        "bitmap" : {
+          "type" : "roaring"
+        },
+        "dimensionSketches" : {
+          "type" : "none"
+        },
+        "allowNullForNumbers" : false
+      },
+      "buildV9Directly" : true,
+      "ignoreInvalidRows" : true,
+      "maxRowsInMemory" : 75000,
+      "maxOccupationInMemory" : -1
+    }
+  }
+}

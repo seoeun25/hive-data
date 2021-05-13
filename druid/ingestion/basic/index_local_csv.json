@@ -1,0 +1,168 @@
+{
+  "type" : "index",
+  "id" : "index_t_world____2020-06-15T12:30:21.347Z",
+  "resource" : {
+    "availabilityGroup" : "index_t_world____2020-06-15T12:30:21.347Z",
+    "requiredCapacity" : 1
+  },
+  "spec" : {
+    "dataSchema" : {
+      "dataSource" : "t_world___",
+      "parser" : {
+        "type" : "csv.stream",
+        "timestampSpec" : {
+          "column" : "dt",
+          "format" : "yyyyMMdd",
+          "missingValue" : "2020-06-15T12:30:21.344Z",
+          "invalidValue" : "2020-06-15T12:30:21.344Z",
+          "replaceWrongColumn" : true,
+          "timeZone" : "UTC",
+          "locale" : "en"
+        },
+        "dimensionsSpec" : {
+          "dimensions" : [ "reco_nm", "item_nm" ],
+          "dimensionExclusions" : [ ],
+          "spatialDimensions" : [ ]
+        },
+        "columns" : [ "dt", "reco_nm", "item_nm", "transmission", "transmission_u", "transmission_uc", "impression", "impression_u", "impression_uc", "click", "click_u", "click_uc", "item_like", "item_like_u", "item_like_uc", "item_dislike", "item_dislike_u", "item_dislike_uc", "channel_like", "channel_like_u", "channel_like_uc" ],
+        "skipHeaderRecord" : true,
+        "charset" : "UTF-8"
+      },
+      "metricsSpec" : [ {
+        "type" : "count",
+        "name" : "count"
+      }, {
+        "type" : "sum",
+        "name" : "transmission",
+        "fieldName" : "transmission",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "transmission_u",
+        "fieldName" : "transmission_u",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "transmission_uc",
+        "fieldName" : "transmission_uc",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "impression",
+        "fieldName" : "impression",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "impression_u",
+        "fieldName" : "impression_u",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "impression_uc",
+        "fieldName" : "impression_uc",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "click",
+        "fieldName" : "click",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "click_u",
+        "fieldName" : "click_u",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "click_uc",
+        "fieldName" : "click_uc",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "item_like",
+        "fieldName" : "item_like",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "item_like_u",
+        "fieldName" : "item_like_u",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "item_like_uc",
+        "fieldName" : "item_like_uc",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "item_dislike",
+        "fieldName" : "item_dislike",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "item_dislike_u",
+        "fieldName" : "item_dislike_u",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "item_dislike_uc",
+        "fieldName" : "item_dislike_uc",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "channel_like",
+        "fieldName" : "channel_like",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "channel_like_u",
+        "fieldName" : "channel_like_u",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "channel_like_uc",
+        "fieldName" : "channel_like_uc",
+        "inputType" : "double"
+      } ],
+      "enforceType" : true,
+      "granularitySpec" : {
+        "type" : "uniform",
+        "segmentGranularity" : "YEAR",
+        "queryGranularity" : "DAY",
+        "rollup" : false,
+        "append" : false,
+        "intervals" : [ "1920-01-01T00:00:00.000Z/2120-01-01T00:00:00.000Z" ]
+      }
+    },
+    "ioConfig" : {
+      "type" : "index",
+      "firehose" : {
+        "type" : "local",
+        "baseDir" : "/tmp",
+        "filter" : "t_world____1592224221323.csv",
+        "parser" : null
+      }
+    },
+    "tuningConfig" : {
+      "type" : "index",
+      "targetPartitionSize" : 5000000,
+      "indexSpec" : {
+        "bitmap" : {
+          "type" : "roaring"
+        },
+        "dimensionSketches" : {
+          "type" : "none"
+        },
+        "allowNullForNumbers" : false
+      },
+      "buildV9Directly" : true,
+      "ignoreInvalidRows" : true,
+      "maxRowsInMemory" : 75000,
+      "maxOccupationInMemory" : -1
+    }
+  },
+  "context" : {
+    "druid.task.runner.dedicated.host" : "campaign-hub.internal.cloudapp.net:8091"
+  },
+  "groupId" : "index_t_world____2020-06-15T12:30:21.347Z",
+  "dataSource" : "t_world___",
+  "interval" : "1920-01-01T00:00:00.000Z/2120-01-01T00:00:00.000Z"
+}

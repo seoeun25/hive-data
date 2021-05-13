@@ -1,0 +1,80 @@
+{
+  "type" : "index",
+  "spec" : {
+    "dataSchema" : {
+      "dataSource" : "worldcup",
+      "parser" : {
+        "type" : "csv.stream",
+        "timestampSpec" : {
+          "column" : "Date",
+          "format" : "yyyy-MM-dd'T'HH:mm:ss.SSSZZ",
+          "missingValue" : "2020-06-23T08:08:36.329Z",
+          "invalidValue" : "2020-06-23T08:08:36.329Z",
+          "replaceWrongColumn" : true,
+          "timeZone" : "Asia/Seoul",
+          "locale" : "en"
+        },
+        "dimensionsSpec" : {
+          "dimensions" : [ "Year", "Time", "Round", "Stadium", "City", "Country", "HomeTeam", "AwayTeam", "Observation" ],
+          "dimensionExclusions" : [ ],
+          "spatialDimensions" : [ ]
+        },
+        "columns" : [ "Year", "Date", "Time", "Round", "Stadium", "City", "Country", "HomeTeam", "HomeGoals", "AwayGoals", "AwayTeam", "Observation" ],
+        "delimiter" : ",",
+        "recordSeparator" : "\n",
+        "skipHeaderRecord" : true,
+        "charset" : "UTF-8"
+      },
+      "metricsSpec" : [ {
+        "type" : "count",
+        "name" : "count"
+      }, {
+        "type" : "sum",
+        "name" : "HomeGoals",
+        "fieldName" : "HomeGoals",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "AwayGoals",
+        "fieldName" : "AwayGoals",
+        "inputType" : "double"
+      } ],
+      "enforceType" : true,
+      "granularitySpec" : {
+        "type" : "uniform",
+        "segmentGranularity" : "MONTH",
+        "queryGranularity" : "DAY",
+        "rollup" : false,
+        "append" : false,
+        "intervals" : [ "1930-07-01T00:00:00.000Z/1930-09-01T00:00:00.000Z" ]
+      },
+      "dimensionFixed" : false
+    },
+    "ioConfig" : {
+      "type" : "index",
+      "firehose" : {
+        "type" : "local",
+        "baseDir" : "/tmp",
+        "filter" : "worldcup.csv",
+        "extractPartition" : false
+      }
+    },
+    "tuningConfig" : {
+      "type" : "index",
+      "targetPartitionSize" : 5000000,
+      "indexSpec" : {
+        "bitmap" : {
+          "type" : "roaring"
+        },
+        "dimensionSketches" : {
+          "type" : "none"
+        },
+        "allowNullForNumbers" : false
+      },
+      "buildV9Directly" : true,
+      "ignoreInvalidRows" : true,
+      "maxRowsInMemory" : 75000,
+      "maxOccupationInMemory" : -1
+    }
+  }
+}

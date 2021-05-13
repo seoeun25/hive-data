@@ -1,0 +1,81 @@
+{
+  "type" : "index_hadoop",
+  "spec" : {
+    "dataSchema" : {
+      "dataSource" : "worldcup",
+      "parser" : {
+        "type" : "string",
+        "parseSpec": {
+          "format": "csv",
+          "dimensionsSpec" : {
+            "dimensions" : [ "Year", "Time", "Round", "Stadium", "City", "Country", "HomeTeam", "AwayTeam", "Observation" ],
+            "dimensionExclusions" : [ ],
+            "spatialDimensions" : [ ]
+          },
+          "timestampSpec" : {
+            "column" : "Date",
+            "format" : "yyyy-MM-dd'T'HH:mm:ss.SSSZZ",
+            "missingValue" : "2020-06-23T08:08:36.329Z",
+            "invalidValue" : "2020-06-23T08:08:36.329Z",
+            "replaceWrongColumn" : true,
+            "timeZone" : "Asia/Seoul",
+            "locale" : "en"
+          },
+          "columns" : [ "Year", "Date", "Time", "Round", "Stadium", "City", "Country", "HomeTeam", "HomeGoals", "AwayGoals", "AwayTeam", "Observation" ]
+        },
+        "delimiter" : ",",
+        "recordSeparator" : "\n",
+        "charset" : "UTF-8"
+      },
+      "metricsSpec" : [ {
+        "type" : "count",
+        "name" : "count"
+      }, {
+        "type" : "sum",
+        "name" : "HomeGoals",
+        "fieldName" : "HomeGoals",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "AwayGoals",
+        "fieldName" : "AwayGoals",
+        "inputType" : "double"
+      } ],
+      "enforceType" : true,
+      "granularitySpec" : {
+        "type" : "uniform",
+        "segmentGranularity" : "MONTH",
+        "queryGranularity" : "DAY",
+        "rollup" : false,
+        "append" : false,
+        "intervals" : [ "1930-07-01T00:00:00.000Z/1930-08-30T00:00:00.000Z" ]
+      },
+      "dimensionFixed" : false
+    },
+    "ioConfig" : {
+      "type" : "hadoop",
+      "inputSpec" : {
+        "type" : "static",
+        "paths" : "/quickstart/worldcup-hadoop.csv"
+      }
+    },
+    "tuningConfig" : {
+      "type" : "hadoop",
+      "partitionsSpec" : {
+        "type" : "hashed",
+        "targetPartitionSize" : 5000000
+      },
+      "forceExtendableShardSpecs" : true,
+      "jobProperties" : {
+        "dfs.client.use.datanode.hostname" : "true",
+        "dfs.datanode.use.datanode.hostname" : "true",
+        "yarn.nodemanager.vmem-check-enabled" : "false",
+        "mapreduce.map.java.opts" : "-Duser.timezone=UTC -Dfile.encoding=UTF-8",
+        "mapreduce.job.user.classpath.first" : "true",
+        "mapreduce.reduce.java.opts" : "-Duser.timezone=UTC -Dfile.encoding=UTF-8",
+        "mapreduce.map.memory.mb" : 1024,
+        "mapreduce.reduce.memory.mb" : 1024
+      }
+    }
+  }
+}

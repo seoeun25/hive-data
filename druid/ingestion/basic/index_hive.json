@@ -1,0 +1,110 @@
+{
+  "type": "index_hadoop",
+  "spec": {
+    "dataSchema": {
+      "dataSource": "test_gwmrm",
+      "parser": {
+        "type": "orc",
+        "parseSpec": {
+          "format": "timeAndDims",
+          "dimensionsSpec": {
+            "dimensions": [
+              "description",
+              "invoicedate",
+              "country"
+            ],
+            "dimensionExclusions": [],
+            "spatialDimensions": []
+          },
+          "timestampSpec": {
+            "type": "hadoop",
+            "column": "current_datetime",
+            "missingValue": "2020-04-21T00:43:38.713Z",
+            "invalidValue": "2020-04-21T00:43:38.713Z",
+            "replaceWrongColumn": true
+          }
+        }
+      },
+      "metricsSpec": [
+        {
+          "type": "count",
+          "name": "count"
+        },
+        {
+          "type": "sum",
+          "name": "invoiceno",
+          "fieldName": "invoiceno",
+          "inputType": "double"
+        },
+        {
+          "type": "sum",
+          "name": "stockcode",
+          "fieldName": "stockcode",
+          "inputType": "double"
+        },
+        {
+          "type": "sum",
+          "name": "quantity",
+          "fieldName": "quantity",
+          "inputType": "double"
+        },
+        {
+          "type": "sum",
+          "name": "unitprice",
+          "fieldName": "unitprice",
+          "inputType": "double"
+        },
+        {
+          "type": "sum",
+          "name": "customerid",
+          "fieldName": "customerid",
+          "inputType": "double"
+        }
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "MONTH",
+        "queryGranularity": "MONTH",
+        "intervals": [
+          "2019-10-21T00:43:38.713Z/2020-10-21T00:43:38.713Z"
+        ],
+        "rollup": false,
+        "append": false
+      },
+      "enforceType": true
+    },
+    "ioConfig": {
+      "type": "hadoop",
+      "inputSpec": {
+        "type": "hive",
+        "source": "default.kaggle",
+        "metastoreUri": "thrift://metatron-hadoop-04:9083",
+        "partialPartitionList": [],
+        "splitSize": "512M"
+      }
+    },
+    "tuningConfig": {
+      "type": "hadoop",
+      "ingestionMode": "REDUCE_MERGE",
+      "useCombiner": false,
+      "buildV9Directly": true,
+      "maxRowsInMemory": 75000,
+      "maxOccupationInMemory": 1024000000,
+      "maxShardLength": 256000000,
+      "ignoreInvalidRows": true,
+      "partitionsSpec": {
+        "type": "sized",
+        "targetPartitionSize": 0
+      },
+      "jobProperties": {
+        "mapreduce.map.memory.mb": "4096",
+        "mapreduce.task.files.preserve.filepattern": ".*",
+        "mapreduce.reduce.memory.mb": "4096",
+        "keep.task.files.pattern": ".*",
+        "mapreduce.map.java.opts": "-server -Xmx4096m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps",
+        "mapreduce.job.user.classpath.first": "true",
+        "mapreduce.reduce.java.opts": "-server -Xmx4096m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+      }
+    }
+  }
+}

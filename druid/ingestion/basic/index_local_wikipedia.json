@@ -1,0 +1,83 @@
+{
+  "type": "index",
+  "spec": {
+    "dataSchema": {
+      "dataSource": "wikipedia",
+      "parser": {
+        "type": "string",
+        "parseSpec": {
+          "format": "json",
+          "dimensionsSpec": {
+            "dimensions": [
+              "channel",
+              "cityName",
+              "comment",
+              "countryIsoCode",
+              "countryName",
+              "isAnonymous",
+              "isMinor",
+              "isNew",
+              "isRobot",
+              "isUnpatrolled",
+              "metroCode",
+              "namespace",
+              "page",
+              "regionIsoCode",
+              "regionName",
+              "user"
+            ]
+          },
+          "timestampSpec": {
+            "column": "time",
+            "format": "auto"
+          }
+        }
+      },
+      "metricsSpec": [
+        {
+          "name": "count",
+          "type": "count"
+        },
+        {
+          "name": "added",
+          "type": "longSum",
+          "fieldName": "added"
+        },
+        {
+          "name": "deleted",
+          "type": "longSum",
+          "fieldName": "deleted"
+        },
+        {
+          "name": "delta",
+          "type": "longSum",
+          "fieldName": "delta"
+        },
+        {
+          "name": "user_unique",
+          "type": "hyperUnique",
+          "fieldName": "user"
+        }
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "day",
+        "queryGranularity": "none",
+        "intervals": [
+          "2015-09-12/2015-09-13"
+        ]
+      }
+    },
+    "ioConfig": {
+      "type": "index",
+      "firehose": {
+        "type": "local",
+        "filter": "wikiticker-2015-09-12-sampled.json",
+        "baseDir": "quickstart/"
+      }
+    },
+    "tuningConfig": {
+      "type": "index"
+    }
+  }
+}

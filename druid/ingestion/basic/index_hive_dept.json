@@ -1,0 +1,79 @@
+{
+  "type": "index_hadoop",
+  "spec": {
+    "dataSchema": {
+      "dataSource": "dept",
+      "parser": {
+        "type": "string",
+        "parseSpec": {
+          "format": "csv",
+          "dimensionsSpec": {
+            "dimensions": ["dept_no", "dept_name", "fruit"],
+            "dimensionExclusions": [],
+            "spatialDimensions": []
+          },
+          "timestampSpec" : {
+            "column" : "con_date",
+            "format" : "yyyy-MM-dd",
+            "missingValue" : "2021-05-06T12:30:21.344Z",
+            "invalidValue" : "2021-05-07T12:30:21.344Z",
+            "replaceWrongColumn" : true,
+            "timeZone" : "UTC",
+            "locale" : "en"
+          },
+          "columns" : [ "dept_no", "dept_name", "fruit", "con_date"]
+        }
+      },
+      "metricsSpec": [
+        {
+          "type": "count",
+          "name": "count"
+        }
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "DAY",
+        "queryGranularity": "NONE",
+        "intervals": [
+          "2021-04-29/2021-04-30"
+        ],
+        "rollup": false,
+        "append": false
+      },
+      "enforceType": true
+    },
+    "ioConfig": {
+      "type": "hadoop",
+      "inputSpec": {
+        "type": "hive",
+        "source": "default.dept",
+        "metastoreUri": "thrift://azra:9083",
+        "partialPartitionList" : [ {
+          "con_date" : "2021-04-29"
+        }],
+        "splitSize": "512M"
+      }
+    },
+    "tuningConfig": {
+      "type": "hadoop",
+      "ingestionMode": "REDUCE_MERGE",
+      "useCombiner": false,
+      "buildV9Directly": true,
+      "maxRowsInMemory": 75000,
+      "maxOccupationInMemory": 1024000000,
+      "maxShardLength": 256000000,
+      "ignoreInvalidRows": true,
+      "partitionsSpec": {
+        "type": "sized",
+        "targetPartitionSize": 0
+      },
+      "jobProperties": {
+        "mapreduce.map.memory.mb": "4096",
+        "mapreduce.reduce.memory.mb": "4096",
+        "mapreduce.map.java.opts": "-Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps",
+        "mapreduce.job.user.classpath.first": "true",
+        "mapreduce.reduce.java.opts": "-Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "type":"index_hadoop",
+  "spec":{
+    "dataSchema":{
+      "dataSource":"lineitem_hive",
+      "parser":{
+        "type":"string",
+        "parseSpec":{
+          "format":"tsv",
+          "timestampSpec": { "column":"L_SHIPDATE", "format":"yyyy-MM-dd" },
+          "dimensionsSpec":{
+            "dimensions":[ "L_ORDERKEY", "L_PARTKEY", "L_SUPPKEY", "L_LINENUMBER", "L_QUANTITY", "L_EXTENDEDPRICE", "L_DISCOUNT", "L_TAX", "L_RETURNFLAG", "L_LINESTATUS", "L_SHIPDATE", "L_COMMITDATE", "L_RECEIPTDATE", "L_SHIPINSTRUCT", "L_SHIPMODE", "L_COMMENT"]
+          },
+          "delimiter": "|",
+          "columns": [ "L_ORDERKEY", "L_PARTKEY", "L_SUPPKEY", "L_LINENUMBER", "L_QUANTITY", "L_EXTENDEDPRICE", "L_DISCOUNT", "L_TAX", "L_RETURNFLAG", "L_LINESTATUS", "L_SHIPDATE", "L_COMMITDATE", "L_RECEIPTDATE", "L_SHIPINSTRUCT", "L_SHIPMODE", "L_COMMENT"]
+        }
+      },
+      "xevaluations":[
+        { "outputName": "L_METRIC", "expressions": [ "cast(L_QUANTITY, 'long') * cast(L_EXTENDEDPRICE, 'double')", "_ * (1-cast(L_DISCOUNTi, 'double'))" ] }
+      ],
+      "xvalidations":[
+        { "columnName": "L_LINENUMBER", "exclusions": [ "L_LINENUMBER != 1" ] }
+      ],
+      "xmetricsSpec":[ { "name" : "L_METRIC", "type" : "sum", "fieldName": "L_METRIC" }],
+      "granularitySpec":{
+        "type":"uniform",
+        "segmentGranularity":"YEAR",
+        "queryGranularity":"NONE",
+        "intervals":[
+          "1992-01-01/1999-01-01"
+        ]
+      }
+    },
+    "ioConfig": {
+      "type": "hadoop",
+      "inputSpec":{
+        "type":"hive",
+        "source": "default.lineitem",
+        "metastoreUri": "thrift://navisui-MacBook-Pro.local:9083"
+      }
+    },
+    "tuningConfig":{
+      "type":"hadoop",
+      "ingestionMode":"REDUCE_MERGE",
+      "useCombiner":false,
+      "buildV9Directly":true,
+      "maxRowsInMemory":3000000,
+      "maxOccupationInMemory":1024000000,
+      "maxShardLength":256000000,
+      "partitionsSpec":{
+        "type" : "hashed",
+        "numShards" : 1,
+        "XtargetPartitionSize":400000000,
+        "XnumBackgroundPersistThreads":10
+      },
+      "jobProperties" : {
+        "mapreduce.map.java.opts" : "-server -Xmx6g -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps",
+        "mapreduce.reduce.java.opts" : "-server -Xmx6g -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps",
+        "mapreduce.map.memory.mb" : 4096,
+        "mapreduce.reduce.memory.mb" : 4096
+      }
+    }
+  },
+  "hadoopDependencyCoordinates" : [ "org.apache.hadoop:hadoop-client:2.6.2" ],
+  "context":{
+    "druid.indexer.runner.javaOpts":"-server -Xmx4g -Xms4g -XX:MaxPermSize=1g -Xdebug -Xrunjdwp:transport=dt_socket,address=0.0.0.0:11200,server=y,suspend=n"
+  }
+}
+Collapse
+
+
+
+Jump
+Mark as read (esc)
+Message Input
+
+Message navis
