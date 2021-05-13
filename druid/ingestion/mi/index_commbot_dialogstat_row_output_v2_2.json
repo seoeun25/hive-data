@@ -1,0 +1,103 @@
+{
+  "type": "index_hadoop",
+  "spec" : {
+    "dataSchema" : {
+      "dataSource" : "commbot_dialogstat_row_output_v2",
+      "parser" : {
+        "type" : "parquet",
+        "parseSpec" : {
+          "format" : "timeAndDims",
+          "dimensionsSpec" : {
+            "dimensions" : [ "site", "login_time", "req_time", "max_rsp_time", "min_rsp_time", "rsp_duration", "req_rsp_duration", "dialogsessionid", "dialogtransactionid", "user_id", "provider", "provider_usn", "user_unique_id", "new_account", "menu_id", "keyword", "svc_type", "roleinstance", "browser", "browser_version", "device_model", "device_name", "os_version", "content", "prompt_id", "intent", "prompt_id_first", "prompt_id_last", "intent_first", "intent_last", "restart", "rsp_content", "rsp_payload", "rsp_count", "session_start_time", "session_end_time", "session_duration", "session_state", "scenario", "intent_str_first", "intent_str_last", "prompt_group_first", "prompt_field_first", "prompt_group_last", "prompt_field_last", "prompt_case_first", "prompt_case_last", "conn_loc", "keyword_str", "menu_id_str", "svc_type_str", "state", "dt", "type" ],
+            "dimensionExclusions" : [ ],
+            "spatialDimensions" : [ ]
+          },
+          "timestampSpec" : {
+            "type" : "hadoop",
+            "column" : "timestamp",
+            "format" : "yyyy-MM-dd HH:mm:ss.SSSSSS",
+            "missingValue" : "2020-12-09T18:42:16.472Z",
+            "invalidValue" : "2020-12-09T18:42:16.472Z",
+            "replaceWrongColumn" : false,
+            "timeZone" : "Asia/Seoul",
+            "locale" : "en"
+          }
+        }
+      },
+      "metricsSpec" : [ {
+        "type" : "count",
+        "name" : "count"
+      } ],
+      "enforceType" : true,
+      "granularitySpec" : {
+        "type" : "uniform",
+        "segmentGranularity" : "DAY",
+        "queryGranularity" : "DAY",
+        "rollup" : false,
+        "append" : false,
+        "intervals" : [ "2020-12-09T00:00:00.000Z/2020-12-09T23:59:59.000Z" ]
+      },
+      "dimensionFixed" : false
+    },
+    "ioConfig" : {
+      "type" : "hadoop",
+      "inputSpec" : {
+        "type" : "hadoop",
+        "elements" : [ {
+          "paths" : "/data-src/mi/commbot/dialogStat_row_output_v2/dt=2020-12-09/type=prd"
+        }, {
+          "paths" : "/data-src/mi/commbot/dialogStat_row_output_v2/dt=2020-12-09/type=qa"
+        } ],
+        "inputFormat" : "io.druid.data.input.parquet.HiveParquetInputFormat",
+        "splitSize" : 536870912,
+        "extractPartition" : true
+      }
+    },
+    "tuningConfig" : {
+      "type" : "hadoop",
+      "partitionsSpec" : {
+        "type" : "sized",
+        "targetPartitionSize" : 0,
+        "maxPartitionSize" : 0,
+        "assumeGrouped" : false,
+        "numShards" : -1
+      },
+      "shardSpecs" : {
+        "1599523200000" : [ {
+          "shardNum" : 0
+        } ]
+      },
+      "indexSpec" : {
+        "bitmap" : {
+          "type" : "roaring"
+        },
+        "allowNullForNumbers" : false
+      },
+      "maxRowsInMemory" : 75000,
+      "maxOccupationInMemory" : 1024000000,
+      "maxShardLength" : 256000000,
+      "leaveIntermediate" : false,
+      "cleanupOnFailure" : true,
+      "overwriteFiles" : false,
+      "ignoreInvalidRows" : true,
+      "jobProperties" : {
+        "mapreduce.map.memory.mb" : "4096",
+        "mapreduce.task.files.preserve.filepattern" : ".*",
+        "mapreduce.reduce.memory.mb" : "4096",
+        "keep.task.files.pattern" : ".*",
+        "mapreduce.map.java.opts" : "-server -Xmx4096m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps",
+        "mapreduce.job.user.classpath.first" : "true",
+        "mapreduce.reduce.java.opts" : "-server -Xmx4096m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+      },
+      "ingestionMode" : "REDUCE_MERGE",
+      "combineText" : false,
+      "useCombiner" : false,
+      "minReducer" : 1,
+      "maxReducer" : 100,
+      "scatterParam" : -1,
+      "bytesPerReducer" : -1,
+      "buildV9Directly" : true,
+      "numBackgroundPersistThreads" : 0
+    }
+  }
+}

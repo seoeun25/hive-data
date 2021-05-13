@@ -1,0 +1,86 @@
+{
+  "type": "index_hadoop",
+  "spec" : {
+    "dataSchema" : {
+      "dataSource" : "tos_cmpgn_ext_02",
+      "parser" : {
+        "type" : "map",
+        "parseSpec" : {
+          "format" : "timeAndDims",
+          "dimensionsSpec" : {
+            "dimensions" : [ "cmpgn_num", "cmpgn_nm", "cmpgn_st_cd", "cmpgn_sta_dt", "cmpgn_exec_typ_cd", "extrt_dt", "ract_typ_cd", "cust_age_cd", "sex_cd", "eqp_mdl_nm", "prod_nm", "arpus" ],
+            "dimensionExclusions" : [ ],
+            "spatialDimensions" : [ ]
+          },
+          "timestampSpec" : {
+            "type" : "hadoop",
+            "column" : "extrt_dt",
+            "format" : "yyyyMMdd",
+            "missingValue" : "2020-09-10T03:10:23.883Z",
+            "invalidValue" : "2020-09-10T03:10:23.883Z",
+            "replaceWrongColumn" : false  ,
+            "timeZone" : "UTC",
+            "locale" : "en"
+          }
+        }
+      },
+      "metricsSpec" : [ {
+        "type" : "count",
+        "name" : "count"
+      }, {
+        "type" : "sum",
+        "name" : "send_cnt",
+        "fieldName" : "send_cnt",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "click_cnt",
+        "fieldName" : "click_cnt",
+        "inputType" : "double"
+      } ],
+      "enforceType" : true,
+      "granularitySpec" : {
+        "type" : "uniform",
+        "segmentGranularity" : "MONTH",
+        "queryGranularity" : "DAY",
+        "rollup" : false,
+        "append" : false,
+        "intervals" : [ "2019-10-01T00:00:00.000Z/2021-01-01T00:00:00.000Z" ]
+      },
+      "dimensionFixed" : false
+    },
+    "ioConfig" : {
+      "type" : "hadoop",
+      "inputSpec" : {
+        "type" : "hive",
+        "source" : "tos_parquet",
+        "metastoreUri" : "thrift://azra:9083",
+        "partialPartitionList" : [ ],
+        "splitSize" : "512M"
+      }
+    },
+    "tuningConfig" : {
+      "type" : "hadoop",
+      "partitionsSpec" : {
+        "type" : "sized",
+        "targetPartitionSize" : 0,
+        "maxPartitionSize" : 0,
+        "assumeGrouped" : false,
+        "numShards" : -1
+      },
+      "ignoreInvalidRows" : false,
+      "jobProperties" : {
+        "mapreduce.map.memory.mb" : "4096",
+        "mapreduce.task.files.preserve.filepattern" : ".*",
+        "mapreduce.reduce.memory.mb" : "4096",
+        "keep.task.files.pattern" : ".*",
+        "mapreduce.map.java.opts" : "-server -Xmx4096m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps",
+        "mapreduce.job.user.classpath.first" : "true",
+        "mapreduce.reduce.java.opts" : "-server -Xmx4096m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+      },
+      "ingestionMode" : "REDUCE_MERGE",
+      "buildV9Directly" : true,
+      "numBackgroundPersistThreads" : 0
+    }
+  }
+}
