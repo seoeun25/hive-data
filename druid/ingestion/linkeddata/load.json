@@ -1,0 +1,89 @@
+{
+  "paths":[
+    "/tmp/temp_ds__linked_as_xlegm_1604085619871.csv"
+  ],
+  "schema":{
+    "dataSource":"linked_as_xlegm",
+    "parser":{
+      "type":"csv.stream",
+      "timestampSpec":{
+        "column":"activity_published_time",
+        "format":"yyyy-MM-dd HH:mm:ss.SSSSSS",
+        "missingValue":"2020-10-30T19:20:20.439Z",
+        "invalidValue":"2020-10-30T19:20:20.439Z",
+        "replaceWrongColumn":true,
+        "timeZone":"Asia/Seoul",
+        "locale":"en"
+      },
+      "dimensionsSpec":{
+        "dimensions":[
+          "activity_action",
+          "activity_actor",
+          "activity_actor_type",
+          "activity_generator_name",
+          "activity_generator_type",
+          "activity_object_content",
+          "activity_object_id",
+          "activity_object_type",
+          "activity_target_id",
+          "activity_target_type",
+          "activity_result",
+          "activity_remote_host"
+        ],
+        "dimensionExclusions":[
+
+        ],
+        "spatialDimensions":[
+
+        ]
+      },
+      "columns":[
+        "id",
+        "activity_action",
+        "activity_actor",
+        "activity_actor_type",
+        "activity_generator_name",
+        "activity_generator_type",
+        "activity_object_content",
+        "activity_object_id",
+        "activity_object_type",
+        "activity_published_time",
+        "activity_target_id",
+        "activity_target_type",
+        "activity_result",
+        "activity_remote_host"
+      ]
+    },
+    "metricsSpec":[
+      {
+        "type":"count",
+        "name":"count"
+      },
+      {
+        "type":"sum",
+        "name":"id",
+        "fieldName":"id",
+        "inputType":"double"
+      }
+    ],
+    "granularitySpec":{
+      "type":"uniform",
+      "segmentGranularity":"HOUR",
+      "queryGranularity":"SECOND",
+      "intervals":[
+        "2020-06-13T21/2020-06-28T06"
+      ],
+      "rollup":false,
+      "append":false
+    },
+    "enforceType":true
+  },
+  "properties":{
+    "assertLoaded":true,
+    "waitTimeout":10000
+  },
+  "temporary":true
+}
+
+
+
