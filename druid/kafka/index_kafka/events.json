@@ -1,0 +1,60 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "events",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "timestampSpec": {
+          "column": "event_time",
+          "format": "auto"
+        },
+        "dimensionsSpec": {
+          "dimensions": ["d1", "d2"],
+          "dimensionExclusions": [
+          ]
+        }
+      }
+    },
+    "metricsSpec": [
+      {
+        "name": "count",
+        "type": "count"
+      },
+      {
+        "fieldName": "m1",
+        "type": "longSum",
+        "inputType": "double",
+        "name": "m1"
+      },
+      {
+        "fieldName": "m2",
+        "type": "longSum",
+        "inputType": "double",
+        "name": "m2"
+      }
+    ],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "HOUR",
+      "queryGranularity": "NONE",
+      "rollup": false
+    }
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "maxRowsPerSegment": 5000000
+  },
+  "ioConfig": {
+    "topic": "events",
+    "taskCount": 1,
+    "replicas": 1,
+    "taskDuration": "PT10M",
+    "completionTimeout": "PT20M",
+    "consumerProperties": {
+      "bootstrap.servers": "localhost:9092"
+    }
+  }
+}
+

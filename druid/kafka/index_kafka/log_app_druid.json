@@ -1,0 +1,122 @@
+{
+  "type" : "index_kafka",
+  "id" : "index_kafka_log_app_druid_0d2e93a26c210ec_ccfanenj",
+  "resource" : {
+    "availabilityGroup" : "index_kafka_log_app_druid_0d2e93a26c210ec",
+    "requiredCapacity" : 1
+  },
+  "dataSchema" : {
+    "dataSource" : "log_app_druid",
+    "parser" : {
+      "type" : "string",
+      "parseSpec" : {
+        "format" : "json",
+        "timestampSpec" : {
+          "column" : "recv_time",
+          "format" : "auto"
+        },
+        "dimensionsSpec" : {
+          "dimensions" : [ "log_type" ],
+          "dimensionExclusions" : [ ]
+        }
+      }
+    },
+    "metricsSpec" : [ {
+      "type" : "count",
+      "name" : "count"
+    } ],
+    "granularitySpec" : {
+      "type" : "uniform",
+      "segmentGranularity" : "DAY",
+      "queryGranularity" : "HOUR",
+      "rollup" : true,
+      "append" : false,
+      "intervals" : null
+    },
+    "evaluations" : [ ],
+    "validations" : [ ]
+  },
+  "tuningConfig" : {
+    "type" : "kafka",
+    "maxRowsInMemory" : 75000,
+    "maxRowsPerSegment" : 5000000,
+    "intermediatePersistPeriod" : "PT10M",
+    "basePersistDirectory" : "/usr/local/druid/tmp/1542780667545-0",
+    "maxPendingPersists" : 0,
+    "indexSpec" : {
+      "bitmap" : {
+        "type" : "roaring"
+      },
+      "dimensionSketches" : {
+        "type" : "none"
+      },
+      "secondaryIndexing" : { }
+    },
+    "buildV9Directly" : true,
+    "reportParseExceptions" : false,
+    "handoffConditionTimeout" : 0
+  },
+  "ioConfig" : {
+    "type" : "kafka",
+    "baseSequenceName" : "index_kafka_log_app_druid_0d2e93a26c210ec",
+    "startPartitions" : {
+      "topic" : "tmap-client-log",
+      "partitionOffsetMap" : {
+        "0" : 370044039,
+        "1" : 370051852,
+        "2" : 370038442,
+        "3" : 370051901,
+        "4" : 370040258,
+        "5" : 370051929,
+        "6" : 370041928,
+        "7" : 370051911,
+        "8" : 370015821,
+        "9" : 370051866,
+        "10" : 370044038,
+        "11" : 370051854,
+        "12" : 370038434,
+        "13" : 370051917,
+        "14" : 370040253,
+        "15" : 370051924,
+        "16" : 370041919,
+        "17" : 370051913,
+        "18" : 370015820,
+        "19" : 370051871
+      }
+    },
+    "endPartitions" : {
+      "topic" : "tmap-client-log",
+      "partitionOffsetMap" : {
+        "0" : 9223372036854775807,
+        "1" : 9223372036854775807,
+        "2" : 9223372036854775807,
+        "3" : 9223372036854775807,
+        "4" : 9223372036854775807,
+        "5" : 9223372036854775807,
+        "6" : 9223372036854775807,
+        "7" : 9223372036854775807,
+        "8" : 9223372036854775807,
+        "9" : 9223372036854775807,
+        "10" : 9223372036854775807,
+        "11" : 9223372036854775807,
+        "12" : 9223372036854775807,
+        "13" : 9223372036854775807,
+        "14" : 9223372036854775807,
+        "15" : 9223372036854775807,
+        "16" : 9223372036854775807,
+        "17" : 9223372036854775807,
+        "18" : 9223372036854775807,
+        "19" : 9223372036854775807
+      }
+    },
+    "consumerProperties" : {
+      "bootstrap.servers" : "172.27.116.59:9092,172.27.116.69:9092,172.27.116.79:9092,172.27.116.89:9092,172.27.116.99:9092,172.27.116.109:9092,172.27.116.119:9092,172.27.116.129:9092,172.27.116.139:9092,172.27.116.149:9092"
+    },
+    "useTransaction" : true,
+    "pauseAfterRead" : false,
+    "minimumMessageTime" : null
+  },
+  "context" : { },
+  "groupId" : "index_kafka_log_app_druid",
+  "dataSource" : "log_app_druid"
+}
