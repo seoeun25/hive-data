@@ -1,0 +1,1 @@
+{"queryType":"summary","dataSource":{"type":"table","name":"worldcup"},"dimensions":[],"metrics":[],"intervals":["1900-01-01T00:00:00.0Z/2051-01-01T00:00:00.0Z"],"includeTimeStats":true}
