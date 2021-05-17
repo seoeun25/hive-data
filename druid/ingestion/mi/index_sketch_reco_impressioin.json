@@ -1,0 +1,101 @@
+{
+  "type": "index_hadoop",
+  "spec" : {
+    "dataSchema" : {
+      "dataSource" : "user_reco_impression_daily_raw__tw_01",
+      "parser" : {
+        "type" : "string",
+        "parseSpec" : {
+          "format" : "csv",
+          "dimensionsSpec" : {
+            "dimensions" : [ "log_timestamp", "request_id", "process_id", "user_id", "sale_org_id", "experiment_id", "bucket_name", "ml_model_type", "ml_model_name", "ml_model_version", "ml_model_components", "table", "ranking_experiment_id", "ranking_bucket_name", "ranking_ml_model_type", "ranking_ml_model_name", "ranking_ml_model_version", "ranking_ml_model_components", "ranking_table", "channel_seq", "channel_id", "item_seq", "item_id", "item_nm", "client_id", "funnel", "process_item_id" ],
+            "dimensionExclusions" : [ ],
+            "spatialDimensions" : [ ]
+          },
+          "timestampSpec" : {
+            "type" : "hadoop",
+            "column" : "dt",
+            "format" : "yyyy-MM-dd",
+            "missingValue" : "2021-05-12T01:13:19.197Z",
+            "invalidValue" : "2021-05-12T01:13:19.197Z",
+            "replaceWrongColumn" : true,
+            "timeZone" : "UTC",
+            "locale" : "en"
+          },
+          "columns" : [ "log_timestamp", "request_id", "process_id", "user_id", "sale_org_id", "experiment_id", "bucket_name", "ml_model_type", "ml_model_name", "ml_model_version", "ml_model_components", "table", "ranking_experiment_id", "ranking_bucket_name", "ranking_ml_model_type", "ranking_ml_model_name", "ranking_ml_model_version", "ranking_ml_model_components", "ranking_table", "channel_seq", "channel_id", "item_seq", "item_id", "item_nm", "client_id", "funnel", "process_item_id", "dt" ]
+        }
+      },
+      "enforceType" : true,
+      "granularitySpec" : {
+        "type" : "uniform",
+        "segmentGranularity" : "DAY",
+        "queryGranularity" : "DAY",
+        "rollup" : false,
+        "append" : false,
+        "intervals" : [ "2021-05-09T00:00:00.000Z/2021-05-09T23:59:59.000Z" ]
+      },
+      "dimensionFixed" : false
+    },
+    "ioConfig" : {
+      "type" : "hadoop",
+      "inputSpec" : {
+        "type" : "hadoop",
+        "elements" : [ {
+          "paths" : "/data-src/tmembership/user_reco_impression_daily_raw__tw/dt=2021-05-09"
+        } ],
+        "inputFormat" : "org.apache.hadoop.mapred.TextInputFormat",
+        "splitSize" : 536870912,
+        "extractPartition" : true
+      },
+      "segmentOutputPath" : "/druid/storage"
+    },
+    "tuningConfig" : {
+      "type" : "hadoop",
+      "workingPath" : "/druid/indexing-tmp",
+      "version" : "2021-05-12T01:13:19.205Z",
+      "partitionsSpec" : {
+        "type" : "sized",
+        "targetPartitionSize" : 0,
+        "maxPartitionSize" : 0,
+        "assumeGrouped" : false,
+        "numShards" : -1
+      },
+      "shardSpecs" : {
+        "1620691200000" : [ {
+          "shardNum" : 0
+        } ]
+      },
+      "indexSpec" : {
+        "bitmap" : {
+          "type" : "roaring"
+        },
+        "allowNullForNumbers" : false
+      },
+      "maxRowsInMemory" : 75000,
+      "maxOccupationInMemory" : 1024000000,
+      "maxShardLength" : 256000000,
+      "leaveIntermediate" : false,
+      "cleanupOnFailure" : true,
+      "overwriteFiles" : false,
+      "ignoreInvalidRows" : true,
+      "jobProperties" : {
+        "mapreduce.map.memory.mb" : "4096",
+        "mapreduce.task.files.preserve.filepattern" : ".*",
+        "mapreduce.reduce.memory.mb" : "4096",
+        "keep.task.files.pattern" : ".*",
+        "mapreduce.map.java.opts" : "-server -Xmx4096m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps",
+        "mapreduce.job.user.classpath.first" : "true",
+        "mapreduce.reduce.java.opts" : "-server -Xmx4096m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+      },
+      "ingestionMode" : "REDUCE_MERGE",
+      "combineText" : false,
+      "useCombiner" : false,
+      "minReducer" : 1,
+      "maxReducer" : 100,
+      "scatterParam" : -1,
+      "bytesPerReducer" : -1,
+      "buildV9Directly" : true,
+      "numBackgroundPersistThreads" : 0
+    }
+  }
+}

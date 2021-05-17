@@ -1,0 +1,72 @@
+{
+  "queryType": "groupBy",
+  "dataSource": {
+    "type": "table",
+    "name": "user_reco_impression_daily_raw__tmembership_01"
+  },
+  "granularity": "all",
+  "intervals": [
+    "2021-01-01T00:00:00.000Z/2021-12-31T23:59:00.000Z"
+  ],
+  "virtualColumns": [
+  ],
+  "dimensions": [
+    {
+      "type": "default",
+      "dimension": "item_nm",
+      "outputName": "item_nm"
+    }
+  ],
+  "xaggregations": [
+    {
+      "type": "thetaSketch",
+      "name": "aggregationfunc_000",
+      "fieldName": "process_item_id",
+      "size": 65536,
+      "shouldFinalize": true,
+      "predicate": "\"funnel\"=='like'"
+    },
+    {
+      "type": "thetaSketch",
+      "name": "aggregationfunc_001",
+      "fieldName": "process_item_id",
+      "size": 65536,
+      "shouldFinalize": true,
+      "predicate": "\"funnel\"=='display'"
+    }
+  ],
+  "aggregations": [
+    {
+      "type": "thetaSketch",
+      "name": "aggregationfunc_000",
+      "fieldName": "process_item_id",
+      "size": 65536,
+      "shouldFinalize": true,
+      "predicate": "\"funnel\"=='like'"
+    },
+    {
+      "type": "thetaSketch",
+      "name": "aggregationfunc_001",
+      "fieldName": "process_item_id",
+      "size": 65536,
+      "shouldFinalize": true,
+      "predicate": "\"funnel\"=='display'"
+    }
+  ],
+  "limitSpec": {
+    "type": "default",
+    "limit": 100000,
+    "columns": [
+      {
+        "dimension": "item_nm",
+        "direction": "ascending",
+        "dimensionOrder": "alphanumeric"
+      }
+    ]
+  },
+  "context": {
+    "postProcessing": {
+      "type": "sketch.estimate"
+    }
+  }
+}
