@@ -1,8 +1,3 @@
-CREATE TABLE `tos_parquet`
-STORED AS PARQUET
-AS SELECT * FROM tos_cmpgn_ext limit 10
-;
-
 CREATE EXTERNAL TABLE `tos_parquet`(
   `cmpgn_num` string,
   `cmpgn_nm` string,

@@ -1,0 +1,205 @@
+{
+  "type": "index_hadoop",
+  "spec" : {
+    "dataSchema" : {
+      "dataSource" : "reco_qa_user_profile_stats_04",
+      "parser" : {
+        "type" : "string",
+        "parseSpec" : {
+          "format" : "csv",
+          "dimensionsSpec" : {
+            "dimensions" : [ "dimension", "dim_type", "status_bf_m0", "status_bf_m1", "status_bf_m2", "alarm_yn", "cat_val" ],
+            "dimensionExclusions" : [ ],
+            "spatialDimensions" : [ ]
+          },
+          "timestampSpec" : {
+            "type" : "hadoop",
+            "column" : "ymd",
+            "format" : "yyyy-MM",
+            "missingValue" : "2020-07-29T10:44:37.512Z",
+            "invalidValue" : "2020-07-29T10:44:37.512Z",
+            "replaceWrongColumn" : true,
+            "timeZone" : "UTC",
+            "locale" : "en"
+          },
+          "columns" : [ "dimension", "dim_type", "cur_count", "unique_count", "null_count", "zero_count", "null_ratio", "zero_ratio", "cat_val", "cat_ratio_bf_m0", "cat_ratio_bf_m1", "cat_ratio_bf_m2", "cat_ratio_diff_bf_m1", "cat_ratio_diff_bf_m2", "mean_bf_m0", "mean_bf_m1", "mean_bf_m2", "mean_ratio_diff_bf_m1", "mean_ratio_diff_bf_m2", "std_bf_m0", "std_bf_m1", "std_bf_m2", "std_ratio_diff_bf_m1", "std_ratio_diff_bf_m2", "status_bf_m0", "status_bf_m1", "status_bf_m2", "alarm_yn", "ymd" ]
+        }
+      },
+      "metricsSpec" : [ {
+        "type" : "count",
+        "name" : "count"
+      }, {
+        "type" : "sum",
+        "name" : "cur_count",
+        "fieldName" : "cur_count",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "unique_count",
+        "fieldName" : "unique_count",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "null_count",
+        "fieldName" : "null_count",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "zero_count",
+        "fieldName" : "zero_count",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "null_ratio",
+        "fieldName" : "null_ratio",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "zero_ratio",
+        "fieldName" : "zero_ratio",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "cat_ratio_bf_m0",
+        "fieldName" : "cat_ratio_bf_m0",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "cat_ratio_bf_m1",
+        "fieldName" : "cat_ratio_bf_m1",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "cat_ratio_bf_m2",
+        "fieldName" : "cat_ratio_bf_m2",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "cat_ratio_diff_bf_m1",
+        "fieldName" : "cat_ratio_diff_bf_m1",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "cat_ratio_diff_bf_m2",
+        "fieldName" : "cat_ratio_diff_bf_m2",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "mean_bf_m0",
+        "fieldName" : "mean_bf_m0",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "mean_bf_m1",
+        "fieldName" : "mean_bf_m1",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "mean_bf_m2",
+        "fieldName" : "mean_bf_m2",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "mean_ratio_diff_bf_m1",
+        "fieldName" : "mean_ratio_diff_bf_m1",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "mean_ratio_diff_bf_m2",
+        "fieldName" : "mean_ratio_diff_bf_m2",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "std_bf_m0",
+        "fieldName" : "std_bf_m0",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "std_bf_m1",
+        "fieldName" : "std_bf_m1",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "std_bf_m2",
+        "fieldName" : "std_bf_m2",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "std_ratio_diff_bf_m1",
+        "fieldName" : "std_ratio_diff_bf_m1",
+        "inputType" : "double"
+      }, {
+        "type" : "sum",
+        "name" : "std_ratio_diff_bf_m2",
+        "fieldName" : "std_ratio_diff_bf_m2",
+        "inputType" : "double"
+      } ],
+      "enforceType" : true,
+      "granularitySpec" : {
+        "type" : "uniform",
+        "segmentGranularity" : "MONTH",
+        "queryGranularity" : "MONTH",
+        "rollup" : false,
+        "append" : false,
+        "intervals" : [ "2020-07-01T00:00:00.000Z/2020-08-01T00:00:00.000Z" ]
+      },
+      "dimensionFixed" : false
+    },
+    "ioConfig" : {
+      "type" : "hadoop",
+      "inputSpec": {
+        "type": "static",
+        "paths": "/data-src/mi/user_profile_stats/ymd=2020-07"
+      }
+    },
+    "tuningConfig" : {
+      "type" : "hadoop",
+      "partitionsSpec" : {
+        "type" : "sized",
+        "targetPartitionSize" : 0,
+        "maxPartitionSize" : 0,
+        "assumeGrouped" : false,
+        "numShards" : -1
+      },
+      "shardSpecs" : {
+        "1593561600000" : [ {
+          "shardNum" : 0
+        } ]
+      },
+      "indexSpec" : {
+        "bitmap" : {
+          "type" : "roaring"
+        },
+        "dimensionSketches" : {
+          "type" : "none"
+        },
+        "allowNullForNumbers" : false
+      },
+      "maxRowsInMemory" : 75000,
+      "maxOccupationInMemory" : 1024000000,
+      "maxShardLength" : 256000000,
+      "leaveIntermediate" : false,
+      "cleanupOnFailure" : true,
+      "overwriteFiles" : false,
+      "ignoreInvalidRows" : true,
+      "jobProperties" : {
+        "mapreduce.map.memory.mb" : "4096",
+        "mapreduce.task.files.preserve.filepattern" : ".*",
+        "mapreduce.reduce.memory.mb" : "4096",
+        "keep.task.files.pattern" : ".*",
+        "mapreduce.map.java.opts" : "-server -Xmx4096m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps",
+        "mapreduce.job.user.classpath.first" : "true",
+        "mapreduce.reduce.java.opts" : "-server -Xmx4096m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps"
+      },
+      "ingestionMode" : "REDUCE_MERGE",
+      "combineText" : false,
+      "useCombiner" : false,
+      "minReducer" : 1,
+      "maxReducer" : 100,
+      "scatterParam" : -1,
+      "bytesPerReducer" : -1,
+      "buildV9Directly" : true,
+      "numBackgroundPersistThreads" : 0
+    }
+  }
+}

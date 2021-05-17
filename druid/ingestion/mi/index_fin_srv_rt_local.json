@@ -1,0 +1,128 @@
+{
+  "type": "index",
+  "spec": {
+    "dataSchema": {
+      "dataSource": "fin_srv_rt",
+      "parser": {
+        "type": "csv.stream",
+        "timestampSpec": {
+          "column": "dt",
+          "format": "yyyyMMdd",
+          "missingValue": "2020-06-25T11:15:22.255Z",
+          "invalidValue": "2020-06-25T11:15:22.255Z",
+          "replaceWrongColumn": true,
+          "timeZone": "UTC",
+          "locale": "en"
+        },
+        "dimensionsSpec": {
+          "dimensions": [
+            "reco_type",
+            "chnl_type",
+            "prod_type",
+            "item_id",
+            "prod_id",
+            "prod_nm",
+            "bucket_id"
+          ],
+          "dimensionExclusions": [
+          ],
+          "spatialDimensions": [
+          ]
+        },
+        "columns": [
+          "dt",
+          "reco_type",
+          "chnl_type",
+          "prod_type",
+          "item_id",
+          "prod_id",
+          "prod_nm",
+          "bucket_id",
+          "scrb_d",
+          "total_scrbr_cnt",
+          "cumul_term_cnt",
+          "srv_rt",
+          "abs50",
+          "scrb_m_amt"
+        ],
+        "skipHeaderRecord": true,
+        "charset": "UTF-8"
+      },
+      "metricsSpec": [
+        {
+          "type": "count",
+          "name": "count"
+        },
+        {
+          "type": "sum",
+          "name": "scrb_d",
+          "fieldName": "scrb_d",
+          "inputType": "double"
+        },
+        {
+          "type": "sum",
+          "name": "total_scrbr_cnt",
+          "fieldName": "total_scrbr_cnt",
+          "inputType": "double"
+        },
+        {
+          "type": "sum",
+          "name": "cumul_term_cnt",
+          "fieldName": "cumul_term_cnt",
+          "inputType": "double"
+        },
+        {
+          "type": "sum",
+          "name": "srv_rt",
+          "fieldName": "srv_rt",
+          "inputType": "double"
+        },
+        {
+          "type": "sum",
+          "name": "abs50",
+          "fieldName": "abs50",
+          "inputType": "double"
+        },
+        {
+          "type": "sum",
+          "name": "scrb_m_amt",
+          "fieldName": "scrb_m_amt",
+          "inputType": "double"
+        }
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "DAY",
+        "queryGranularity": "NONE",
+        "intervals": [
+          "2020-05-31/2020-06-31"
+        ],
+        "rollup": false,
+        "append": false
+      },
+      "enforceType": true
+    },
+    "ioConfig": {
+      "type": "hadoop",
+      "inputSpec": {
+        "type": "static",
+        "paths": "/data-src/fin_srv_rt/ymd=20200531"
+      }
+    },
+    "tuningConfig": {
+      "type": "hadoop",
+      "partitionsSpec": {
+        "type": "hashed",
+        "targetPartitionSize": 5000000
+      },
+      "forceExtendableShardSpecs": true,
+      "jobProperties": {
+        "mapreduce.map.java.opts": "-Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps",
+        "mapreduce.reduce.java.opts": "-Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps",
+        "mapreduce.map.memory.mb": 4096,
+        "mapreduce.reduce.memory.mb": 4096,
+        "mapreduce.job.user.classpath.first": "true"
+      }
+    }
+  }
+}

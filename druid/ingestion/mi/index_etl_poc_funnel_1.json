@@ -1,0 +1,127 @@
+{
+  "type": "index_hadoop",
+  "spec": {
+    "dataSchema": {
+      "dataSource": "etl_poc_funnel_02",
+      "parser": {
+        "type": "string",
+        "parseSpec": {
+          "format": "csv",
+          "dimensionsSpec": {
+            "dimensions": [
+              "level",
+              "service",
+              "type",
+              "request_id",
+              "client_id",
+              "channel_id",
+              "hashed_user_id",
+              "process_id",
+              "item_id",
+              "datetime",
+              "experiment_id",
+              "bucket_name",
+              "ml_model_type",
+              "item_ord",
+              "sale_org_id",
+              "poc_cd",
+              "poc_nm",
+              "reco_type",
+              "reco_nm",
+              "std_item_id",
+              "std_item_nm",
+              "item_type",
+              "channel",
+              "sex_cd",
+              "svc_gr_cd",
+              "twd_device_nm",
+              "cust_birth_dt",
+              "prod_nm",
+              "svc_scrb_dt"
+            ],
+            "dimensionExclusions": [],
+            "spatialDimensions": []
+          },
+          "timestampSpec": {
+            "column": "dt",
+            "format": "yyyyMMdd",
+            "timeZone": "UTC",
+            "locale": "en"
+          },
+          "columns": [
+            "level",
+            "service",
+            "type",
+            "request_id",
+            "client_id",
+            "channel_id",
+            "hashed_user_id",
+            "process_id",
+            "item_id",
+            "datetime",
+            "dt",
+            "experiment_id",
+            "bucket_name",
+            "ml_model_type",
+            "item_ord",
+            "sale_org_id",
+            "poc_cd",
+            "poc_nm",
+            "reco_type",
+            "reco_nm",
+            "std_item_id",
+            "std_item_nm",
+            "item_type",
+            "channel",
+            "sex_cd",
+            "svc_gr_cd",
+            "twd_device_nm",
+            "cust_birth_dt",
+            "prod_nm",
+            "svc_scrb_dt"
+          ]
+        }
+      },
+      "metricsSpec": [
+        {
+          "type": "count",
+          "name": "count"
+        }
+      ],
+      "granularitySpec": {
+        "type": "uniform",
+        "segmentGranularity": "DAY",
+        "queryGranularity": "NONE",
+        "intervals": [
+          "2020-07-21/2020-07-22"
+        ],
+        "rollup": false,
+        "append": false
+      },
+      "enforceType": true
+    },
+    "ioConfig": {
+      "type": "hadoop",
+      "inputSpec": {
+        "type": "static",
+        "paths": "/data-src/mi/etl_poc_funnel_02/ymd=20200721"
+      }
+    },
+    "tuningConfig": {
+      "type": "hadoop",
+      "partitionsSpec": {
+        "type": "hashed",
+        "targetPartitionSize": 5000000
+      },
+      "ignoreInvalidRows": true,
+      "forceExtendableShardSpecs": true,
+      "jobProperties": {
+        "mapreduce.map.java.opts": "-Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps",
+        "mapreduce.reduce.java.opts": "-Duser.timezone=UTC -Dfile.encoding=UTF-8 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps",
+        "mapreduce.map.memory.mb": 4096,
+        "mapreduce.reduce.memory.mb": 4096,
+        "mapreduce.job.user.classpath.first": "true"
+      }
+    }
+  }
+}
